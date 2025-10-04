@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collage Conmemorativo - Cielo Estrellado</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="starry-background"></div>
+    <div id="falling-stars"></div>
+    <div id="emerging-roses"></div>
+    <div id="falling-words"></div>
+    <div id="final-text" style="display:none; justify-content:center; align-items:center; margin-top:24px;">
+        <div class="slideshow-text" style="font-size:1.5em; text-align:center; color:#a259c6; font-weight:bold;">Veo en ti la luz.</div>
+    </div>
+    <div id="final-img" style="display:none; justify-content:center; align-items:center; margin-top:48px;">
+        <img src="cuarta.jpeg" alt="Imagen final" style="max-width:400px; border-radius:16px; box-shadow:0 4px 24px #a259c6;">
+    </div>
+    <div id="slideshow4" style="display:none; justify-content:center; align-items:center; margin-top:48px;">
+        <div class="slideshow-text" style="font-size:1.3em; text-align:center;">
+            Y si un día dudas de tu luz, recuerda que hay alguien que siempre la verá brillar; alguien que cree en lo fuerte y creativa que eres, alguien que solo te quiere dedicar esto.
+        </div>
+    </div>
+    <div id="butterfly"></div>
+    <h1 class="animated-title" style="margin-bottom: 56px;">¿Así que tú eres esa chica especial?</h1>
+    <div id="slides-container" style="margin-top: 0;">
+        <div id="intro-slideshow" style="display:none; flex-direction:row; align-items:center; justify-content:center;">
+            <h2 class="animated-intro" style="margin-right:32px;">Me han contado mucho de ti, y hay una personita que le gustaría que supieras que:</h2>
+        </div>
+        <div id="slideshow" style="display:none; flex-direction:row; align-items:center; justify-content:center;">
+            <div class="slideshow-text" style="margin-right:32px;">
+                Cada noche, cuando el velo oscuro se extiende,<br>
+                mi mente no puede evitar dibujarte.<br>
+                Eres esa estrella brillante en mi particular noche estrellada.
+            </div>
+            <img src="img.jpeg" alt="Primera imagen" class="slideshow-img">
+        </div>
+    <div id="slideshow2" style="display:none; flex-direction:column; align-items:center; justify-content:center; margin-top:64px;">
+            <div style="display:flex; flex-direction:row; align-items:center; justify-content:center; margin-bottom:24px;">
+                <img src="segunda.jpeg" alt="Segunda imagen" class="slideshow-img" style="margin-right:32px;">
+                <div class="slideshow-text">
+                    Mi princesa, mi Rapunzel, eres la linterna más brillante, flotando en mi firmamento,<br>
+                    recordándome que hasta el más duro de los cínicos<br>
+                    tiene un alma dispuesta a seguir ese sentimiento.
+                </div>
+            </div>
+            <div style="display:flex; flex-direction:row; align-items:center; justify-content:center;">
+                <div class="slideshow-text" style="margin-right:32px;">
+                    Con un corazón que nunca deja de brillar,<br>
+                    como Rapunzel, capaz de transformar el mundo<br>
+                    con solo dejarse ser y amar.<br>
+                    De un Flynn, el cual su sueño ideal…<br>
+                    se le ha hecho realidad.<br>
+                </div>
+                <img src="tercera.jpeg" alt="Tercera imagen" class="slideshow-img">
+            </div>
+        </div>
+    </div>
+    <audio id="bg-music" controls style="display:block; margin:32px auto 48px auto; max-width:400px;">
+        <source src="frances.mp3" type="audio/mpeg" />
+        Tu navegador no soporta audio.
+    </audio>
+    <div class="fixed-yellow-flower"></div>
+    <script>
+    // Mariposa SVG y animación
+    const butterflySVG = `<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+        <g>
+            <!-- Ala superior izquierda -->
+            <ellipse class='wing-left' cx="18" cy="22" rx="14" ry="10" fill="#a259c6" stroke="#6d2c91" stroke-width="2"/>
+            <!-- Ala superior derecha -->
+            <ellipse class='wing-right' cx="42" cy="22" rx="14" ry="10" fill="#a259c6" stroke="#6d2c91" stroke-width="2"/>
+            <!-- Ala inferior izquierda -->
+            <ellipse class='wing-bottom-left' cx="18" cy="38" rx="10" ry="7" fill="#6d2c91" stroke="#a259c6" stroke-width="2"/>
+            <!-- Ala inferior derecha -->
+            <ellipse class='wing-bottom-right' cx="42" cy="38" rx="10" ry="7" fill="#6d2c91" stroke="#a259c6" stroke-width="2"/>
+            <!-- Cuerpo -->
+            <rect x="28" y="20" width="4" height="20" rx="2" fill="#6d2c91"/>
+            <!-- Cabeza -->
+            <circle cx="30" cy="18" r="4" fill="#a259c6" stroke="#6d2c91" stroke-width="1"/>
+            <!-- Antenas -->
+            <path d="M30 18 Q28 12 26 16" stroke="#6d2c91" stroke-width="1" fill="none"/>
+            <path d="M30 18 Q32 12 34 16" stroke="#6d2c91" stroke-width="1" fill="none"/>
+        </g>
+    </svg>`;
+
+    function animateButterfly() {
+        console.log('Ejecutando animateButterfly');
+        const butterfly = document.getElementById('butterfly');
+        butterfly.innerHTML = butterflySVG;
+        butterfly.style.position = 'fixed';
+        butterfly.style.zIndex = '100';
+        butterfly.style.transition = 'all 2s cubic-bezier(.68,-0.55,.27,1.55)';
+        let positions = [
+            {top: '32px', left: '32px'},
+            {top: '32px', right: '32px'},
+            {bottom: '32px', right: '32px'},
+            {bottom: '32px', left: '32px'}
+        ];
+        let idx = 0;
+        function moveButterfly() {
+            console.log('Moviendo mariposa a posición', idx);
+            butterfly.style.top = positions[idx].top || '';
+            butterfly.style.left = positions[idx].left || '';
+            butterfly.style.right = positions[idx].right || '';
+            butterfly.style.bottom = positions[idx].bottom || '';
+            idx = (idx + 1) % positions.length;
+        }
+        moveButterfly();
+        window.butterflyInterval = setInterval(moveButterfly, 5000);
+    }
+
+    // Animación de aleteo (CSS)
+    const butterflyFlapStyle = document.createElement('style');
+    butterflyFlapStyle.innerHTML = `
+        #butterfly .wing-left {
+            transform-origin: 36% 50%;
+            animation: flap-left 0.6s infinite ease-in-out;
+        }
+        #butterfly .wing-right {
+            transform-origin: 66% 50%;
+            animation: flap-right 0.6s infinite ease-in-out;
+        }
+        @keyframes flap-left {
+            0%, 100% { transform: rotate(-8deg); }
+            50% { transform: rotate(18deg); }
+        }
+        @keyframes flap-right {
+            0%, 100% { transform: rotate(8deg); }
+            50% { transform: rotate(-18deg); }
+        }
+    `;
+    document.head.appendChild(butterflyFlapStyle);
+
+    // Animaciones y sincronización con la música
+    const audio = document.getElementById('bg-music');
+    let timers = [];
+
+    // Mostrar solo el texto de la chica especial al cargar la página
+    window.addEventListener('DOMContentLoaded', function() {
+    // Mostrar la mariposa siempre
+        document.getElementById('intro-slideshow').style.display = 'none';
+        document.getElementById('slideshow').style.display = 'none';
+        document.getElementById('slideshow2').style.display = 'none';
+        document.getElementById('slideshow4').style.display = 'none';
+        document.getElementById('final-img').style.display = 'none';
+        document.getElementById('final-text').style.display = 'none';
+        document.querySelector('.animated-title').style.display = 'block';
+        document.getElementById('butterfly').style.display = 'block';
+        // Inicializar animaciones SIEMPRE al cargar la página
+        console.log('DOMContentLoaded: inicializando animaciones');
+        animateButterfly();
+        if (!window.roseInterval) {
+            console.log('Iniciando rosas');
+            window.roseInterval = setInterval(createRose, 1200);
+        }
+        if (!window.starInterval) {
+            console.log('Iniciando estrellas');
+            window.starInterval = setInterval(createStar, 400);
+        }
+        // Las animaciones NO dependen de la música
+    });
+
+    function createFallingWord() {
+        console.log('Creando palabra cayendo');
+        const word = document.createElement('div');
+        word.className = 'falling-word';
+        word.textContent = 'TE EXTRAÑO PRINCESA';
+        word.style.left = Math.random() * window.innerWidth + 'px';
+        word.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        document.getElementById('falling-words').appendChild(word);
+        setTimeout(() => word.remove(), 4000);
+    }
+
+    function createRose() {
+        console.log('Creando rosa emergente');
+        const rose = document.createElement('div');
+        rose.className = 'emerging-rose';
+        rose.style.left = Math.random() * window.innerWidth + 'px';
+        rose.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        document.getElementById('emerging-roses').appendChild(rose);
+        setTimeout(() => rose.remove(), 4000);
+    }
+
+    function createStar() {
+        console.log('Creando estrella cayendo');
+        const star = document.createElement('div');
+        star.className = 'falling-star';
+        star.style.left = Math.random() * window.innerWidth + 'px';
+        star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        star.style.opacity = Math.random() * 0.7 + 0.3;
+        document.getElementById('falling-stars').appendChild(star);
+        setTimeout(() => star.remove(), 4000);
+    }
+
+    function startSequence() {
+        console.log('Iniciando secuencia de slides y textos');
+        timers.forEach(clearTimeout);
+        timers = [];
+        timers.push(setTimeout(function() {
+            console.log('Mostrando intro-slideshow');
+            document.getElementById('intro-slideshow').style.display = 'flex';
+        }, 4000));
+        timers.push(setTimeout(function() {
+            console.log('Ocultando intro-slideshow');
+            document.getElementById('intro-slideshow').style.display = 'none';
+        }, 15000));
+        timers.push(setTimeout(function() {
+            console.log('Mostrando slideshow');
+            document.getElementById('slideshow').style.display = 'flex';
+        }, 16000));
+        timers.push(setTimeout(function() {
+            console.log('Ocultando slideshow y mostrando slideshow2');
+            document.getElementById('slideshow').style.display = 'none';
+            document.getElementById('slideshow2').style.display = 'flex';
+        }, 31000));
+        timers.push(setTimeout(function() {
+            console.log('Ocultando primer row de slideshow2');
+            var slide2Rows = document.querySelectorAll('#slideshow2 > div');
+            if (slide2Rows.length > 0) {
+                slide2Rows[0].style.display = 'none';
+            }
+        }, 42500));
+        timers.push(setTimeout(function() {
+            console.log('Mostrando slideshow2');
+            document.getElementById('slideshow2').style.display = 'flex';
+        }, 43000));
+        timers.push(setTimeout(function() {
+            console.log('Cambiando estrellas a morado');
+            const style = document.createElement('style');
+            style.id = 'purple-stars-style';
+            style.innerHTML = '.falling-star { background: linear-gradient(135deg, #a259c6 60%, #6d2c91 100%) !important; box-shadow: 0 0 8px 2px #a259c6; }';
+            document.head.appendChild(style);
+        }, 43000));
+        timers.push(setTimeout(function() {
+            console.log('Cambiando rosas a morado y aumentando cantidad');
+            const style = document.createElement('style');
+            style.id = 'purple-flowers-style';
+            style.innerHTML = '.emerging-rose { background: radial-gradient(circle at 60% 40%, #a259c6 70%, #6d2c91 100%) !important; box-shadow: 0 0 12px 2px #a259c6; }';
+            document.head.appendChild(style);
+            if (window.purpleRoseInterval) clearInterval(window.purpleRoseInterval);
+            window.purpleRoseInterval = setInterval(createRose, 400);
+        }, 43000));
+        timers.push(setTimeout(function() {
+            console.log('Ocultando segundo row de slideshow2');
+            var slide2Rows = document.querySelectorAll('#slideshow2 > div');
+            if (slide2Rows.length > 1) {
+                slide2Rows[1].style.display = 'none';
+            }
+        }, 53000))
+        timers.push(setTimeout(function() {
+            console.log('Mostrando slideshow4');
+            document.getElementById('slideshow4').style.display = 'flex';
+        }, 53000));
+        timers.push(setTimeout(function() {
+            console.log('Ocultando título principal');
+            var titulo = document.querySelector('.animated-title');
+            if (titulo) titulo.style.display = 'none';
+        }, 53000));
+        timers.push(setTimeout(function() {
+                    console.log('Ocultando slideshow4 y mostrando imagen final');
+                    var ultimoTexto = document.getElementById('slideshow4');
+                    if (ultimoTexto) ultimoTexto.style.display = 'none';
+                    document.getElementById('final-img').style.display = 'flex';
+                            // Animar corazón negro clásico y dejarlo fijo
+                            let heart = document.createElement('div');
+                            heart.id = 'black-heart';
+                            heart.innerHTML = `<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M40 68
+                                                C32 60, 10 40, 25 28
+                                                C35 18, 40 28, 40 34
+                                                C40 28, 45 18, 55 28
+                                                C70 40, 48 60, 40 68
+                                            Z" fill="#222" stroke="#444" stroke-width="3"/>
+                            </svg>`;
+                            heart.style.position = 'fixed';
+                            heart.style.left = '50%';
+                            heart.style.top = '50%';
+                            heart.style.transform = 'translate(-50%, -50%) scale(1.2)';
+                            heart.style.zIndex = '200';
+                            heart.style.opacity = '1';
+                            document.body.appendChild(heart);
+            }, 75000));
+        timers.push(setTimeout(function() {
+            console.log('Mostrando texto final');
+            document.getElementById('final-text').style.display = 'flex';
+        }, 105000));
+        timers.push(setTimeout(function() {
+            console.log('Iniciando palabras cayendo');
+            window.fallingWordsInterval = setInterval(createFallingWord, 500);
+            setTimeout(function() {
+                console.log('Deteniendo palabras cayendo');
+                clearInterval(window.fallingWordsInterval);
+            }, 8000); // Palabras caen durante 8 segundos
+        }, 105000));
+    }
+
+    // Sincronizar animaciones con el inicio de la canción
+    audio.addEventListener('play', startSequence);
+
+    // Animaciones continuas
+    let roseInterval = null;
+    let starInterval = null;
+
+    audio.addEventListener('play', function() {
+        if (!roseInterval) roseInterval = setInterval(createRose, 1200);
+        if (!starInterval) starInterval = setInterval(createStar, 400);
+    });
+    </script>
